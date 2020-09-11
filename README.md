@@ -1,12 +1,8 @@
-如果页面访问较慢、图片无法加载，可以访问CDN加速地址：
-
-
-
 # RPi UPSPack V3 产品使用指南
 
 UPSPack v3 是在2020年9月发布的新一代树莓派UPS不间断电源扩展板的最新型号。根据以往v1和v2版本的迭代升级，v3版本是目前树莓派UPS供电最稳定的一种供电方案。
 
-![UPS3](image/UPS3.jpg)
+![UPS3](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/UPS3.jpg)
 
 ## 目录
 
@@ -67,9 +63,9 @@ UPSPack v3 是在2020年9月发布的新一代树莓派UPS不间断电源扩展�
 
 通过EBC-A10H对UPS v3进行电流极限测试。输出最大电流能足量达到：5V 3A。经过实际测试Pi4运行官方Raspbian系统时，正常的功耗是5V 1A左右，如插入摄像头和U盘等外设的情况下，功耗逐渐增大到5V 2A。所以采用UPS v3对Pi4 进行供电，是有较大的余量的。并且在输出3A的情况下。2.54排针接口也能保证5V以上的供电。用户需要注意5V和GND必须使用硅胶杜邦线，如采用普通杜邦线，在电流较大时，会引起较大线损。从而在Pi4上屏幕上观察到闪电的低压符号。
 
-![3a](image/3a.jpg)
+![3a](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/3a.jpg)
 
-![test3a](image/test3a.gif)
+![test3a](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/test3a.gif)
 
 
 
@@ -106,7 +102,7 @@ UPS v3板载电池接口为PH 2.0封装（兼容以往的老型号UPS主板）�
 
 断电不重启是UPS v3的基本功能。以下演示的是Pi4和7寸HDMI屏幕都由UPS v3进行供电，人工拔掉输入的TYPE-C供电线，用来模拟外部停电的情况。Pi4和HDMI屏幕都将维持稳定的工作。
 
-![pwr_off](image/pwr_off.gif)
+![pwr_off](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/pwr_off.gif)
 
 
 
@@ -120,7 +116,7 @@ UPS v3板载电池接口为PH 2.0封装（兼容以往的老型号UPS主板）�
 
 以下采用可编程电源模拟电池低压开机，UPS主板自动进入低压休眠，5V不输出。当TYPE-C线接入后，自动恢复运行和电压输出的整个过程：
 
-![low_bat](image/low_bat.gif)
+![low_bat](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/low_bat.gif)
 
 
 
@@ -131,7 +127,7 @@ UPS v3板载电池接口为PH 2.0封装（兼容以往的老型号UPS主板）�
 
 #### 接口说明
 
-![main_board](image/main_board.jpg)
+![main_board](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/main_board.jpg)
 
 | 标号 | 名称                       | 描述                                                         |
 | ---- | -------------------------- | ------------------------------------------------------------ |
@@ -170,8 +166,8 @@ UPS主板可以使用USB-A座对树莓派主板进行供电，也可以通过GPI
 
 |     供电方式（以下2选1）      |             **接线实例**              |
 | :---------------------------: | :-----------------------------------: |
-| 使用USB-A对树莓派主板进行供电 | ![cable_power](image/cable_power.jpg) |
-| 通过GPIO接口对树莓派进行供电  |  ![gpio_power](image/gpio_power.jpg)  |
+| 使用USB-A对树莓派主板进行供电 | ![cable_power](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/cable_power.jpg) |
+| 通过GPIO接口对树莓派进行供电  |  ![gpio_power](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/gpio_power.jpg)  |
 
 
 
@@ -212,7 +208,7 @@ UPS主板的电池接口：**PH2.0座**。产品出厂配套的电池组内部�
 
 * 自己组装的电池组尽量带6A及以上大电流锂电池保护板：市面上常规的锂电池保护板参数为3A-4A，当外部需要大电流时，保护电流太小的保护板可能会导致输出打嗝的状况。
 
-![bat_info](image/bat_info.jpg)
+![bat_info](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/bat_info.jpg)
 
   
 
@@ -225,7 +221,7 @@ UPS V3 与树莓派通讯，采用2种方式：UART接口和STA单总线接口�
 * UART接口：UPS和树莓派的板载串口进行通讯。树莓派可以得到的信息：通讯心跳包、外部是否停电、电池容量百分比、向外输出电压值。
 * STA单总线接口：UPS主板在电池耗尽之前发送给树莓派主板一个脉冲信息（Halt signal），让树莓派安全的进行软件关机。当树莓派安全关机后，再次切断树莓派的5V主供电电源。（USB-A座和2P排针座都受程序控制）。当外部电源恢复后，UPS主板会自动进入充电流程，当电池充电到达一定容量，会自动对树莓派恢复供电。
 
-![gpio](image/gpio.jpg)
+![gpio](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/gpio.jpg)
 
 
 
