@@ -255,3 +255,54 @@ UPS V3 与树莓派通讯，采用2种方式：UART接口和STA单总线接口�
 
 ##### UART软件
 
+UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的信息：
+
+* UPS运行时间
+* 外部TPYE-C供电口是否供电正常？（GOOD 或者 Not Good）
+* 电池当前百分比电量
+* UPS当前输出电压值
+
+安装过程：
+
+1. 把UPS v3的UART口（TX、RX）和树莓派的UART口进行连接，[详情见:通讯接口](#通讯接口)
+
+2. 编辑/boot/config.txt
+
+3. 增加2行内容，并且ctrl+x保存退出
+
+   ```
+   # 针对2020-08-20-Raspberry Pi OS
+   enable_uart=1
+   dtoverlay=disable-bt
+   ```
+   ![uart1](image/uart1.png)
+   ```
+   # 针对2020-05-27-Raspberry Pi OS 以及更老版本的系统
+   enable_uart=1
+   dtoverlay=pi3-miniuart-bt
+   ```
+   
+4. 再次用ls -al /dev，查看串口0和串口1的指向关系。主要是查看 **serial0 -> ttyAMA0**
+   
+   ![uart2](image/uart2.png)
+   
+5. 重启树莓派
+
+   ```
+   sudo reboot
+   ```
+
+6. 通过minicom串口软件，验证树莓派的串口0和UPS进行正常通信。
+
+   ```
+   sudo apt-get install minicom
+   sudo minicom -D /dev/ttyAMA0 -b 9600
+   ```
+   可以看到UPS发到树莓派上的协议数据包。由于Linux上'\n'只换行，不回到行首。所以minicom上看到的协议，会超出屏幕。这没有关系，我们后面可以利用python来过滤这些信息。
+   
+   **如果想退出minicom: ctrl+A -> z -> x **
+   
+7. 进入树莓派的桌面后，双击 UPS_GUI_py/UPS_GUI_demo.py 即可运行Python GUI 程序
+
+![python_gui](image/python_gui.png)
+
