@@ -227,7 +227,7 @@ UPS主板的电池接口：**PH2.0座**。产品出厂配套的电池组内部�
 
 #### 机械尺寸图
 
-![dim](image/dim.png)
+![dim](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/dim.png)
 
 
 
@@ -269,7 +269,7 @@ UPS V3 与树莓派通讯，采用2种方式：UART接口和STA单总线接口�
     > 
     > ```
 
-![rc](image/rc.png)
+![rc](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/rc.png)
 
 3. 完成以上步骤，即可实现当电池耗尽前，树莓派自动安全关机的功能。并且当外部恢复电源，UPS板子会自动进行充电。当电池充电到一定电量后，UPS会自动开启树莓派的电源。
 
@@ -297,7 +297,7 @@ UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的�
    enable_uart=1
    dtoverlay=disable-bt
    ```
-   ![uart1](image/uart1.png)
+   ![uart1](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/uart1.png)
    ```
    # 针对2020-05-27-Raspberry Pi OS 以及更老版本的系统
    enable_uart=1
@@ -306,7 +306,7 @@ UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的�
    
 4. 再次用ls -al /dev，查看串口0和串口1的指向关系。主要是查看 **serial0 -> ttyAMA0**
    
-   ![uart2](image/uart2.png)
+   ![uart2](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/uart2.png)
    
 5. 重启树莓派
 
@@ -328,10 +328,10 @@ UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的�
 
 7. 进入程序目录/home/pi/UPSPACK_V3/UPS_GUI_py，双击 `UPS_GUI_demo.py` ，跳出一个对话框直接点击确认，即可运行Python GUI 程序。即可看到UPS目前的工作状况。
 
-![click](image/click.png)
+![click](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/click.png)
 
 
-![python_gui](image/python_gui.png)
+![python_gui](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/python_gui.png)
 
 
 <!---
