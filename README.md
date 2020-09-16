@@ -18,7 +18,11 @@ UPSPack v3 是在2020年9月发布的新一代树莓派UPS不间断电源扩展�
   * [LED显示](#LED显示)
   * [电池接口](#电池接口)
   * [通讯接口](#通讯接口)
+  * [机械尺寸图](#机械尺寸图)
 * [软件驱动](#软件驱动)
+  * [安全关机](#安全关机)
+  * [UART软件](#UART软件)
+  * [基于Terminal的终端程序](#基于Terminal的终端程序)
 
 
 
@@ -83,15 +87,15 @@ UPS v3板载电池接口为PH 2.0封装（兼容以往的老型号UPS主板）�
 
 我们搭建了不同的应用组合，得到了如下的续航数据：
 
-| 电池容量 | Pi4单机 | Pi4+官方7寸屏 | Pi4+3.5寸（GPIO屏） | Pi4+5寸（HDMI屏） | Pi+7寸（HDMI屏） |
-| -------- | ------- | ------------- | ------------------- | ----------------- | ---------------- |
-| 4000mAh  | 5       | 待测          | 待测                | 待测              | 2                |
-| 6500mAh  | 9       | 待测          | 待测                | 待测              | 待测             |
-| 10000mAh | 14      | 待测          | 待测                | 待测              | 待测             |
+| 电池容量 | Pi4单机 | Pi4+官方7寸屏(DSI接口) | Pi4+3.5寸(GPIO) | Pi4+5寸(HDMI) | Pi+7寸(HDMI) |
+| :------: | :-----: | :--------------------: | :-------------: | :-----------: | :----------: |
+| 4000mAh  |  5.5h   |           -            |        -        |       -       |     2.0h     |
+| 6500mAh  |  9.0h   |           -            |        -        |       -       |      -       |
+| 10000mAh |  14.5h  |           -            |        -        |       -       |      -       |
 
 测试方式：
 
-1. 以上所有数据单位为小时(hours)。为了更切近实际情况，不到60分钟的数据做省略处理，例如log记录值为344分钟，表格内只取5小时。
+1. 以上所有数据单位为小时(hours)。
 2. 运行的系统为：2020-05-27-raspios-buster-full-armhf ，系统不做任何设置修改。系统后台只运行一个RPi_runtime_recoder.py进行时间统计。
 3. 3种容量的电池完全充满电量，然后接入树莓派后，利用程序进行时间记录。放电截至点为UPS让树莓派自动关机，通过log文件查看实际运行的时间。
 4. 下载、并运行 UPSPACK_V3/time_count/RPi_runtime_recoder.py 进行时间记录。当树莓派关机后，接入其他电源适配器读取程序目录下的time_log.txt进行续航时间的查看。
@@ -178,8 +182,8 @@ UPS主板上板载6个LED灯：
 * 绿色LED：D1、D2、D3、D4用于电池的电量显示
 * 红色LED：Charge Status 为充电状态指示灯。（以下简称CS灯）
   * 当UPS关闭输出，用户只对UPS进行充电时：电池未充满时，CS灯闪烁。当电池完全充满时，CS灯常亮。
-  * 当UPS工作在边冲边放状态下：CS灯一直为闪烁状态。只有当负载较轻的情况下，如给Pi Zero或者类似的负载供电时，CS灯经过较长时间后，会显示常亮。此灯由PMU管理芯片输出控制，当电池未充满时，都表现为闪烁状态。
-  * 当UPS向外输出关闭，并且TYPE-C对UPS充电也关闭时：CS灯持续常亮20s左右后自动关闭。
+  * 当UPS工作在边冲边放状态下：CS灯一直为闪烁状态。只有当负载较轻的情况下，如给Pi Zero或者类似较轻负载供电时，经过较长充电后，CS灯会显示常亮。此灯由PMU管理芯片输出控制，当电池未充满时，都表现为闪烁状态。
+  * 当UPS开关关闭，并且TYPE-C对UPS充电也关闭时：CS灯持续常亮20s后自动关闭。
 * 绿色LED：Power LED为输出电源指示灯。当UPS向树莓派主板输出5V电源时，此灯点亮。
 
 LED电量显示表：
@@ -192,7 +196,7 @@ LED电量显示表：
 | 灭   | 常亮 | 常亮 | 常亮 | 3.89v     |
 | 常亮 | 常亮 | 常亮 | 常亮 | 大于4v    |
 
-当D1-D4都亮起，并且CS灯常亮。就表示电池已完全充满。
+当D1-D4都常亮，并且CS灯也常亮，表示电池已完全充满。
 
 
 
@@ -211,6 +215,12 @@ UPS主板的电池接口：**PH2.0座**。产品出厂配套的电池组内部�
 ![bat_info](https://cdn.jsdelivr.net/gh/rcdrones/UPSPACK_V3/image/bat_info.jpg)
 
   
+
+#### 机械尺寸图
+
+![dim](image/dim.png)
+
+
 
 #### 通讯接口
 
@@ -239,7 +249,7 @@ UPS V3 与树莓派通讯，采用2种方式：UART接口和STA单总线接口�
     >
     > /home/pi/UPSPACK_V3/shutdown_check.py
 
-2.  更改`/etc/rc.local`，把自动关机的程序添加成开机自动启动
+2. 更改`/etc/rc.local`，把自动关机的程序添加成开机自动启动
 
     > ```shell
     > sudo nano /etc/rc.local
@@ -247,7 +257,10 @@ UPS V3 与树莓派通讯，采用2种方式：UART接口和STA单总线接口�
     > #在最下面的 exit 的上面一行添加如下内容
     > 
     > sudo python3 /home/pi/UPSPACK_V3/shutdown_check.py &
+    > 
     > ```
+
+![rc](image/rc.png)
 
 3. 完成以上步骤，即可实现当电池耗尽前，树莓派自动安全关机的功能。并且当外部恢复电源，UPS板子会自动进行充电。当电池充电到一定电量后，UPS会自动开启树莓派的电源。
 
@@ -271,7 +284,7 @@ UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的�
 3. 增加2行内容，并且ctrl+x保存退出
 
    ```
-   # 针对2020-08-20-Raspberry Pi OS
+   # 针对2020-08-20-Raspberry Pi OS及更新版本
    enable_uart=1
    dtoverlay=disable-bt
    ```
@@ -295,14 +308,33 @@ UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的�
 6. 通过minicom串口软件，验证树莓派的串口0和UPS进行正常通信。
 
    ```
-   sudo apt-get install minicom
+   sudo apt-get install minicom -y
    sudo minicom -D /dev/ttyAMA0 -b 9600
    ```
    可以看到UPS发到树莓派上的协议数据包。由于Linux上'\n'只换行，不回到行首。所以minicom上看到的协议，会超出屏幕。这没有关系，我们后面可以利用python来过滤这些信息。
-   
-   ** 如果想退出minicom: ctrl+A -> z -> x **
-   
-7. 进入树莓派的桌面后，双击 UPS_GUI_py/UPS_GUI_demo.py 即可运行Python GUI 程序
+
+   > 提示1：退出minicom按键: Ctrl+A --> z --> x
+   >
+   > 提示2：如未看到通讯协议包，说明UART连接不正确，参考[通讯接口](#通讯接口)。或者是 **serial0 -> ttyAMA0** 指向不正确。按照以上步骤仔细检查。
+
+7. 进入程序目录/home/pi/UPSPACK_V3/UPS_GUI_py，双击 `UPS_GUI_demo.py` ，跳出一个对话框直接点击确认，即可运行Python GUI 程序。即可看到UPS目前的工作状况。
+
+![click](image/click.png)
+
 
 ![python_gui](image/python_gui.png)
 
+
+
+##### 基于Terminal的终端程序
+
+对于某些不运行图形界面的Raspberry Pi OS主机来说。这里也提供用python开发的终端程序。终端程序通过UART接口和UPS v3主板进行信息交互，所以首先确保连接好通讯线。[详情见:通讯接口](#通讯接口)
+
+1. 检查程序的路径`/home/pi/UPSPACK_V3/console_py/ups_cmd.py`是否正确。
+2. 运行程序
+
+    ```
+    sudo python3 /home/pi/UPSPACK_V3/console_py/ups_cmd.py
+    ```
+
+   
