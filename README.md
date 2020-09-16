@@ -334,17 +334,17 @@ UPS和树莓派通过UART接口进行信息交互，可以得到更为丰富的�
 ![python_gui](image/python_gui.png)
 
 
-[^_^]:
-    ##### 基于Terminal的终端程序
-    
-    对于某些不运行图形界面的Raspberry Pi OS主机来说。这里也提供用python开发的终端程序。终端程序通过UART接口和UPS v3主板进行信息交互，所以首先确保连接好通讯线。[详情见:通讯接口](#通讯接口)
-    
-    1. 检查程序的路径`/home/pi/UPSPACK_V3/console_py/ups_cmd.py`是否正确。
-    2. 运行程序
-    
-        ```
-        sudo python3 /home/pi/UPSPACK_V3/console_py/ups_cmd.py
+<!---
+##### 基于Terminal的终端程序
+
+对于某些不运行图形界面的Raspberry Pi OS主机来说。这里也提供用python开发的终端程序。终端程序通过UART接口和UPS v3主板进行信息交互，所以首先确保连接好通讯线。[详情见:通讯接口](#通讯接口)
+
+1. 检查程序的路径`/home/pi/UPSPACK_V3/console_py/ups_cmd.py`是否正确。
+2. 运行程序
     ```
+    sudo python3 /home/pi/UPSPACK_V3/console_py/ups_cmd.py
+    ```
+-->
 
    
 
